@@ -1,10 +1,9 @@
-Second version of the DALI-Matter-Gateway
+**Second version of the DALI-Matter-Gateway**
 
 Controls DALI lights via Matter
 
-Requirements
+**Requirements**
 
-Waveshare ESP32-S3-Pico
-Waveshare DALI2 Expansion Module
-
-PlatformIO
+- Waveshare ESP32-S3-Pico
+- Waveshare DALI2 Expansion Module
+- PlatformIO
