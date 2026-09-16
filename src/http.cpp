@@ -41,7 +41,7 @@ void handleRoot(
   html += "button{border:0;background:#455a64;color:#fff;padding:10px 16px;font-size:14px;cursor:pointer}button:hover{background:#263238}.muted{color:#607d8b;font-size:14px}";
   html += "@media(max-width:600px){.page{padding:22px 12px}h1{font-size:24px}.section{padding:14px 12px}th,td{padding:9px 4px}th:nth-child(3),td:nth-child(3){display:none}}";
   html += "</style></head><body><main class='page'>";
-  html += "<header><h1>Matter Light Status</h1><div id='commission-status' class='status ";
+  html += "<header><h1>DALI-Matter-Gateway</h1><div id='commission-status' class='status ";
   html += Matter.isDeviceCommissioned() ? "ok'>Commissioned" : "wait'>Waiting for commissioning";
   html += "</div><div id='memory' class='memory'>SRAM: ";
   html += String(ESP.getFreeHeap() / 1024);
