@@ -27,7 +27,7 @@ void handleRoot(
   String &webLog
 ) {
   String html = "<html><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1'>";
-  html += "<title>Matter Light Status</title>";
+  html += "<title>DALI-Matter-Gateway</title>";
   html += "<style>";
   html += "*{box-sizing:border-box}body{margin:0;background:#f3f5f6;color:#263238;font-family:Arial,sans-serif;line-height:1.45}";
   html += ".page{max-width:960px;margin:0 auto;padding:32px 20px}header{border-bottom:1px solid #cfd8dc;padding-bottom:18px;margin-bottom:24px}";
@@ -47,11 +47,11 @@ void handleRoot(
   html += String(ESP.getFreeHeap() / 1024);
   html += " / ";
   html += String(ESP.getHeapSize() / 1024);
-  html += " KB frei | PSRAM: ";
+  html += " KB free | PSRAM: ";
   html += String(ESP.getFreePsram() / 1024);
   html += " / ";
   html += String(ESP.getPsramSize() / 1024);
-  html += " KB frei</div></header>";
+  html += " KB free</div></header>";
   if (Matter.isDeviceCommissioned()) {
     html += "<section class='section'><h2>Lights</h2><table><thead><tr><th>Name</th><th>State</th><th>Brightness</th></tr></thead><tbody id='lights-body'>";
     for (uint8_t i = 0; i < lightCount; ++i) {
