@@ -68,7 +68,7 @@ The firmware can be uploaded via USB or OTA.
 
 ## Screenshots
 
-![web interface](docs/images/web-interface.png)
+![web interface](docs/images/webinterface.png)
 
 ## License
 
