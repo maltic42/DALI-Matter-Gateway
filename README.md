@@ -25,6 +25,7 @@ Controls DALI lights via Matter.
 
 ## Software
 
+- Visual Studio Code
 - pioarduino IDE
 - Espressif32 Platform for PlatformIO (pioarduino fork)
 
