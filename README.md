@@ -25,10 +25,8 @@ Controls DALI lights via Matter.
 
 ## Software
 
-- PlatformIO
-- Arduino framework
-- Arduino Matter
-- pioarduino ESP32 platform
+- pioarduino IDE
+- Espressif32 Platform for PlatformIO (pioarduino fork)
 
 ## Features
 
