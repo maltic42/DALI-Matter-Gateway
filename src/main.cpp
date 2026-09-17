@@ -9,84 +9,12 @@
 #include <time.h>
 #include <DALI_lib.h>
 #include <secrets.h>
+#include <light_definitions.h>
 #include <utils.h>
 #include <http.h>
 
-// Light definition
-
-const char *lightNames[] = {
-  "Strahler Flur",
-  "Pendelleuchten Esszimmer",
-  "Strahler Bibliothek",
-  "Pendelleuchten Küche",
-  "Strahler Ankleide",
-  "Leiste Ankleide",
-  "LED unten Küche",
-  "LED oben Küche",
-  "Strahler Küche",
-  "Strahler oben Esszimmer",
-  "Strahler unten Esszimmer",
-  "Strahler oben Wohnzimmer",
-  "Strahler unten Wohnzimmer"
-};
-
-const bool lightIsGroup[] = {
-  true,
-  true,
-  true,
-  true,
-  true,
-  true,
-  true,
-  true,
-  true,
-  true,
-  true,
-  true,
-  true
-};
-
-// Matter IDs device/group for setting level or status
-
-const uint8_t lightSetIds[] = {
-  4,
-  1,
-  5,
-  0,
-  2,
-  3,
-  6,
-  7,
-  8,
-  9,
-  10,
-  11,
-  12
-};
-
-// Matter IDs device for getting level or status
-
-const uint8_t lightStatusIds[] = {
-  4,
-  38,
-  17,
-  11,
-  19,
-  3,
-  6,
-  7,
-  8,
-  16,
-  1,
-  24,
-  10
-};
-
-
-
 // Matter variables
-constexpr uint8_t lightCount = 8;
-MatterDimmableLight lights[lightCount];
+MatterDimmableLight *lights;
 uint32_t lastMatterMessageMillis = 0;
 bool MatterCommissionedMessageShown = false;
 bool updateDaliValues = false;
@@ -279,6 +207,8 @@ void init_matter() {
 
 void setup() {
   Serial.begin(115200);
+
+  lights = new MatterDimmableLight[lightCount];
 
   addLogLine(webLog, "Starting up ...");
 

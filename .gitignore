@@ -8,3 +8,4 @@
 .vscode/ipch
 compile_commands.json
 /src/secrets.cpp
+/src/light_definitions.cpp

@@ -1,0 +1,24 @@
+#include <light_definitions.h>
+
+// Copy this file to src/light_definitions.cpp and replace the example values.
+// light_definitions.cpp is ignored by Git and may contain private installation details.
+
+const uint8_t lightCount = 1;
+
+const char *lightNames[] = {
+  "Living room light"
+};
+
+const bool lightIsGroup[] = {
+  true
+};
+
+// DALI device/group IDs used for setting the light level or status.
+const uint8_t lightSetIds[] = {
+  0
+};
+
+// DALI device IDs used for reading the light level or status.
+const uint8_t lightStatusIds[] = {
+  0
+};
