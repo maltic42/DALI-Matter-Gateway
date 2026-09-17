@@ -36,6 +36,7 @@ Controls DALI lights via Matter.
 - Support for multiple Matter dimmable lights
 - DALI device and group control
 - Reading DALI light levels
+- Logging of DALI traffic and gateway events in the web interface
 - Web interface for status and control
 - OTA firmware updates
 
@@ -53,6 +54,26 @@ These files are listed in `.gitignore`.
 Open the project in PlatformIO and build the project using the configured environment.
 
 The firmware can be uploaded via USB or OTA.
+
+## Open Issues
+
+- The Matter device still uses the example values for some commissioning data,
+	including the example device information and serial number. The Matter QR
+	code is also still generated from the example configuration and must be
+	replaced with project-specific values.
+- The current firmware supports approximately eight Matter lights. This limit
+	is related to the current ESP32 Arduino Matter library implementation. A
+	future library version is expected to use the ESP32's PSRAM more effectively
+	and should allow this limit to be increased.
+
+## Screenshots
+
+```markdown
+![DALI-Matter-Gateway web interface](docs/images/web-interface.png)
+```
+
+After adding the image, commit both the image file and the README change. A
+smaller image is usually preferable for repository size and page loading time.
 
 ## License
 
