@@ -1,46 +1,93 @@
+# DALI-Matter-Gateway
+
 Copyright (C) 2026 Malte Rudolf
 
-This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-**Second version of the DALI-Matter-Gateway**
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-Controls DALI lights via Matter
+## About
 
-**Requirements**
+Second version of the DALI-Matter-Gateway.
+
+Controls DALI lights via Matter.
+
+## Hardware
 
 - Waveshare ESP32-S3-Pico
 - Waveshare DALI2 Expansion Module
+
+## Software
+
 - PlatformIO
+- Arduino framework
+- Arduino Matter
+- pioarduino ESP32 platform
 
-**License**
+## Features
 
-This project is licensed under the GNU General Public License v3.0 (GPL-3.0).
+- Control DALI lights through Matter
+- Support for multiple Matter dimmable lights
+- DALI device and group control
+- Reading DALI light levels
+- Web interface for status and control
+- OTA firmware updates
 
-You are free to:
+## Configuration
 
-use the software for private or commercial purposes
-study and modify the source code
-redistribute the software
-distribute modified versions of the software
+The following files contain project-specific configuration and should not be committed to Git:
 
-Any redistribution of this software or modified versions must comply with the terms of the GNU General Public License v3.0.
+- `include/secrets.h` — Wi-Fi credentials
+- `src/secrets.cpp` — project-specific secrets
+- `include/light_definitions.h` — local light configuration
+- `src/light_definitions.cpp` — local light configuration
 
-**Third-Party Components**
+These files are listed in `.gitignore`.
 
-This project uses third-party software and libraries that are distributed under their respective licenses.
+## Building
 
-The applicable licenses and copyright notices of third-party components remain in effect. Please refer to the respective source code and documentation for details.
+Open the project in PlatformIO and build the project using the configured environment.
 
-**Disclaimer**
+The firmware can be uploaded via USB or OTA.
+
+## License
+
+This project is licensed under the GNU General Public License version 3 or any later version (GPL-3.0-or-later).
+
+See the `LICENSE` file for the complete license terms.
+
+The software may be used, modified and distributed for both private and commercial purposes, subject to the conditions of the GNU General Public License.
+
+## Third-Party Components
+
+### DALI library
+
+The project contains DALI library code originally developed by **qqqlab**.
+
+Copyright © qqqlab
+
+The original copyright and GPLv3+ license notices in the DALI library files have been retained.
+
+The DALI library was obtained from the Waveshare DALI2 hardware/software package.
+
+The applicable copyright and license conditions of the third-party software remain in effect.
+
+## Disclaimer
 
 This software is provided "AS IS", without warranty of any kind, express or implied.
 
-The author provides no guarantee that the software is free of defects or suitable for any particular purpose. The author shall not be responsible for any damage, data loss, hardware damage, financial loss, or other consequences resulting from the use of this software, to the extent permitted by applicable law.
+The author provides no guarantee that the software is free of defects or suitable for any particular purpose.
 
-**Support and Maintenance**
+To the extent permitted by applicable law, the author shall not be liable for any damage, data loss, hardware damage, financial loss, or other consequences resulting from the use of this software.
+
+## Support and Maintenance
 
 This project is provided without any obligation to provide support, maintenance, updates, bug fixes, or other services.
 
 There is no guarantee that issues reported through GitHub Issues, Discussions, or other communication channels will be addressed.
-
-For the complete terms and conditions, please refer to the LICENSE file containing the GNU General Public License v3.0.
