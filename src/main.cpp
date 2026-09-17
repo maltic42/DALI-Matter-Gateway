@@ -155,10 +155,10 @@ void init_ota() {
 void init_webserver() {
   addLogLine(webLog, "Setting up web server ...");
   server.on("/", []() {
-    handleRoot(server, lights, lightCount, lightNames, webLog);
+    handleRoot(server, lights, lightCount, lightNames, lightIsGroup, lightSetIds, lightStatusIds, webLog);
   });
   server.on("/status", []() {
-    handleStatus(server, lights, lightCount, lightNames, webLog);
+    handleStatus(server, lights, lightCount, lightNames, lightIsGroup, lightSetIds, lightStatusIds, webLog);
   });
   server.on("/decommission", HTTP_POST, handleDecommission);
   server.begin();

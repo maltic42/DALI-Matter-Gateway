@@ -10,6 +10,9 @@ void handleRoot(
 	MatterDimmableLight lights[],
 	uint8_t lightCount,
 	const char *lightNames[],
+	const bool lightIsGroup[],
+	const uint8_t lightSetIds[],
+	const uint8_t lightStatusIds[],
 	String &webLog
 );
 
@@ -18,5 +21,8 @@ void handleStatus(
 	MatterDimmableLight lights[],
 	uint8_t lightCount,
 	const char *lightNames[],
+	const bool lightIsGroup[],
+	const uint8_t lightSetIds[],
+	const uint8_t lightStatusIds[],
 	String &webLog
 );
