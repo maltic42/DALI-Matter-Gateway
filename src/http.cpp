@@ -71,8 +71,8 @@ void handleRoot(
   html += ".status.ok{border-color:#2e7d32;color:#1b5e20}.status.wait{border-color:#ef6c00;color:#bf360c}";
   html += ".memory{margin-top:8px;color:#78909c;font-size:12px}";
   html += ".section{background:#fff;border-top:3px solid #90a4ae;padding:18px 20px;margin-bottom:20px}";
-  html += "table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:11px 8px;border-bottom:1px solid #eceff1}th{color:#607d8b;font-size:12px;font-weight:600;text-transform:uppercase}";
-  html += ".state{font-weight:600}.on{color:#2e7d32}.off{color:#757575}textarea{display:block;width:100%;min-height:260px;resize:vertical;border:1px solid #cfd8dc;background:#263238;color:#eceff1;padding:12px;font:13px monospace;line-height:1.5}";
+  html += "table{width:100%;border-collapse:collapse}th,td{text-align:left;vertical-align:middle;padding:11px 8px;border-bottom:1px solid #eceff1}th{color:#607d8b;font-size:12px;font-weight:600;text-transform:uppercase}";
+  html += ".state{font:inherit;line-height:inherit}.on{color:#2e7d32}.off{color:#c62828}textarea{display:block;width:100%;min-height:260px;resize:vertical;border:1px solid #cfd8dc;background:#263238;color:#eceff1;padding:12px;font:13px monospace;line-height:1.5}";
   html += "button{border:0;background:#455a64;color:#fff;padding:10px 16px;font-size:14px;cursor:pointer}button:hover{background:#263238}.muted{color:#607d8b;font-size:14px}";
   html += "@media(max-width:600px){.page{padding:22px 12px}h1{font-size:24px}.section{padding:14px 12px}th,td{padding:9px 4px}th:nth-child(3),td:nth-child(3){display:none}}";
   html += "</style></head><body><main class='page'>";
