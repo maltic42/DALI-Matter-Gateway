@@ -43,9 +43,7 @@ Controls DALI lights via Matter.
 
 The following files contain project-specific configuration and should not be committed to Git:
 
-- `include/secrets.h` — Wi-Fi credentials
-- `src/secrets.cpp` — project-specific secrets
-- `include/light_definitions.h` — local light configuration
+- `src/secrets.cpp` — Wi-Fi credentials
 - `src/light_definitions.cpp` — local light configuration
 
 These files are listed in `.gitignore`.
