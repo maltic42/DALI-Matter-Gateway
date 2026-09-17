@@ -68,9 +68,7 @@ The firmware can be uploaded via USB or OTA.
 
 ## Screenshots
 
-```markdown
 ![DALI-Matter-Gateway web interface](docs/images/web-interface.png)
-```
 
 After adding the image, commit both the image file and the README change. A
 smaller image is usually preferable for repository size and page loading time.
