@@ -17,18 +17,7 @@
 #include <http.h>
 #include <Matter.h>
 #include <utils.h>
-
-#ifndef APP_VERSION
-#define APP_VERSION "0.1.0"
-#endif
-
-#ifndef APP_BUILD
-#define APP_BUILD "local"
-#endif
-
-#ifndef APP_COPYRIGHT
-#define APP_COPYRIGHT "Copyright (C) 2026 Malte Rudolf"
-#endif
+#include <version.h>
 
 static String escapeJson(const String &text) {
   String escaped;
@@ -76,8 +65,6 @@ void handleRoot(
   html += Matter.isDeviceCommissioned() ? "ok'>Commissioned" : "wait'>Waiting for commissioning";
   html += "</div><div class='muted'>Version ";
   html += APP_VERSION;
-  html += " | Build ";
-  html += APP_BUILD;
   html += "</div><div class='muted'>";
   html += APP_COPYRIGHT;
   html += "</div><div id='memory' class='memory'>SRAM: ";
@@ -147,8 +134,6 @@ void handleStatus(
   json += Matter.isDeviceCommissioned() ? "true" : "false";
   json += ",\"version\":\"";
   json += APP_VERSION;
-  json += "\",\"build\":\"";
-  json += APP_BUILD;
   json += "\",\"copyright\":\"";
   json += APP_COPYRIGHT;
   json += "\"";
