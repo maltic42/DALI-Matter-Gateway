@@ -56,7 +56,7 @@ The firmware can be uploaded via USB or OTA.
 
 ## Open Issues
 
-The Matter QR code is  still generated from the example configuration 
+The Matter QR code is  still generated from the example configuration.
 
 ## Screenshots
 
