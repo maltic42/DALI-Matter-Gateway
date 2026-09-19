@@ -14,14 +14,20 @@ GNU General Public License for more details.
 
 ## About
 
-Second version of the DALI-Matter-Gateway.
+This project controls groups of DALI luminaires or individual DALI luminaires
+through Matter using a Waveshare ESP32-S3-Pico and the Waveshare DALI2 Expansion
+Module. This makes the DALI installation available to Matter platforms such as
+Google Home, Amazon Alexa, and Apple HomeKit.
 
-Controls DALI lights via Matter.
+The project was created because existing Matter solutions commonly exposed only
+one DALI group, one luminaire, or all luminaires through a single Matter device.
+This gateway is designed to expose multiple groups and individual luminaires
+independently.
 
 ## Hardware
 
-- Waveshare ESP32-S3-Pico
-- Waveshare DALI2 Expansion Module
+- [Waveshare ESP32-S3-Pico](https://www.waveshare.com/esp32-s3-pico.htm)
+- [Waveshare Pico-DALI2 Expansion Module](https://www.waveshare.com/pico-dali2.htm)
 
 ## Software
 
@@ -38,6 +44,10 @@ Controls DALI lights via Matter.
 - Logging of DALI traffic and gateway events in the web interface
 - Web interface for status and control
 - OTA firmware updates
+
+## Tested
+
+- Controlling groups of DALI luminaires through Google Home
 
 ## Configuration
 

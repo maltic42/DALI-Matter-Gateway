@@ -3,22 +3,27 @@
 // Copy this file to src/light_definitions.cpp and replace the example values.
 // light_definitions.cpp is ignored by Git and may contain private installation details.
 
-const uint8_t lightCount = 1;
+const uint8_t lightCount = 2;
 
 const char *lightNames[] = {
-  "Living room light"
+  "Living room group",
+  "Hallway device"
 };
 
 const bool lightIsGroup[] = {
-  true
+  true,
+  false
 };
 
-// DALI device/group IDs used for setting the light level or status.
+// For groups: DALI group ID. For devices: DALI short address.
 const uint8_t lightSetIds[] = {
-  0
+  1,  // DALI group 1
+  4   // DALI device short address 4
 };
 
-// DALI device IDs used for reading the light level or status.
+// Status is always read from a device. For a group, use any device short
+// address belonging to that group.
 const uint8_t lightStatusIds[] = {
-  0
+  17, // device short address in group 1
+  4   // DALI device short address 4
 };
