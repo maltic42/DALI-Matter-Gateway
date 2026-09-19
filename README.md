@@ -14,14 +14,20 @@ GNU General Public License for more details.
 
 ## About
 
-Second version of the DALI-Matter-Gateway.
+This project controls groups of DALI luminaires or individual DALI luminaires
+through Matter using a Waveshare ESP32-S3-Pico and the Waveshare DALI2 Expansion
+Module. This makes the DALI installation available to Matter platforms such as
+Google Home, Amazon Alexa, and Apple HomeKit.
 
-Controls DALI lights via Matter.
+The project was created because existing Matter solutions commonly exposed only
+one DALI group, one luminaire, or all luminaires through a single Matter device.
+This gateway is designed to expose multiple groups and individual luminaires
+independently.
 
 ## Hardware
 
-- Waveshare ESP32-S3-Pico
-- Waveshare DALI2 Expansion Module
+- [Waveshare ESP32-S3-Pico](https://www.waveshare.com/esp32-s3-pico.htm)
+- [Waveshare Pico-DALI2 Expansion Module](https://www.waveshare.com/pico-dali2.htm)
 
 ## Software
 
@@ -39,14 +45,66 @@ Controls DALI lights via Matter.
 - Web interface for status and control
 - OTA firmware updates
 
+## Tested
+
+- Controlling groups of DALI luminaires through Google Home
+
 ## Configuration
 
 The following files contain project-specific configuration and should not be committed to Git:
 
 - `src/secrets.cpp` — Wi-Fi credentials
 - `src/light_definitions.cpp` — local light configuration
+- `include/timezone.h` — timezone for log timestamps
 
 These files are listed in `.gitignore`.
+
+### Timezone
+
+The timezone is configured in `include/timezone.h` using a POSIX timezone string.
+The default setting is Central European Time with automatic daylight saving time.
+Available timezone names and POSIX string examples can be found in the
+[IANA Time Zone Database](https://www.iana.org/time-zones) and the
+[ESP-IDF time documentation](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/system_time.html#daylight-saving-time).
+
+### Light definitions
+
+The DALI lights are configured in `src/light_definitions.cpp`. The four arrays use
+the same index, so `lightNames[i]`, `lightIsGroup[i]`, `lightSetIds[i]`, and
+`lightStatusIds[i]` always describe the same light in the web interface.
+
+- `lightNames` defines the name shown in the web interface.
+- `lightIsGroup` selects whether the DALI target is a group (`true`) or a device
+	(`false`).
+- `lightSetIds` contains the DALI group ID when `lightIsGroup` is `true`. For a
+	device it contains the DALI short address of that device.
+- `lightStatusIds` contains the DALI short address of a device whose status is read.
+	For a group, enter the short address of any device belonging to that group. The
+	status is always read from a device, never from the group itself.
+
+Example:
+
+```cpp
+const char *lightNames[] = {
+	"Living room group",
+	"Hallway device"
+};
+
+const bool lightIsGroup[] = {
+	true,
+	false
+};
+
+const uint8_t lightSetIds[] = {
+	1,  // DALI group 1
+	4   // DALI device short address 4
+};
+
+const uint8_t lightStatusIds[] = {
+	17, // device short address in group 1
+	4   // device short address 4
+};
+```
 
 ## Building
 

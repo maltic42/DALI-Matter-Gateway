@@ -50,14 +50,14 @@ void handleRoot(
   html += "<title>DALI-Matter-Gateway</title>";
   html += "<style>";
   html += "*{box-sizing:border-box}body{margin:0;background:#f3f5f6;color:#263238;font-family:Arial,sans-serif;line-height:1.45}";
-  html += ".page{max-width:960px;margin:0 auto;padding:32px 20px}header{border-bottom:1px solid #cfd8dc;padding-bottom:18px;margin-bottom:24px}";
+  html += ".page{max-width:1100px;margin:0 auto;padding:32px 20px}header{padding-bottom:18px;margin-bottom:24px}";
   html += "h1{font-size:28px;font-weight:500;margin:0 0 12px}h2{font-size:18px;font-weight:500;margin:0 0 12px}";
   html += ".status{display:inline-block;padding:5px 10px;border-left:4px solid #607d8b;background:#fff;font-size:14px}";
   html += ".status.ok{border-color:#2e7d32;color:#1b5e20}.status.wait{border-color:#ef6c00;color:#bf360c}";
   html += ".memory{margin-top:8px;color:#78909c;font-size:12px}";
   html += ".section{background:#fff;border-top:3px solid #90a4ae;padding:18px 20px;margin-bottom:20px}";
   html += "table{width:100%;border-collapse:collapse}th,td{text-align:left;vertical-align:middle;padding:11px 8px;border-bottom:1px solid #eceff1}th{color:#607d8b;font-size:12px;font-weight:600;text-transform:uppercase}";
-  html += ".state{font:inherit;line-height:inherit}.on{color:#2e7d32}.off{color:#c62828}textarea{display:block;width:100%;min-height:260px;resize:vertical;border:1px solid #cfd8dc;background:#263238;color:#eceff1;padding:12px;font:13px monospace;line-height:1.5}";
+  html += ".state{font:inherit;line-height:inherit}.on{color:#2e7d32}.off{color:#c62828}textarea{display:block;width:calc(100% - 16px);margin:0 8px;min-height:260px;resize:vertical;border:1px solid #cfd8dc;background:#263238;color:#eceff1;padding:12px;font:13px monospace;line-height:1.5}";
   html += "button{border:0;background:#455a64;color:#fff;padding:10px 16px;font-size:14px;cursor:pointer}button:hover{background:#263238}.muted{color:#607d8b;font-size:14px}";
   html += ".footer{background:#e1e6e8;border-top:1px solid #b0bec5;color:#546e7a;padding:8px 20px;margin-top:16px;font-size:13px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}.footer strong{color:#37474f;font-weight:600}.footer .memory{margin-top:0;font-size:inherit;color:inherit}";
   html += "@media(max-width:600px){.page{padding:22px 12px}h1{font-size:24px}.section{padding:14px 12px}th,td{padding:9px 4px}th:nth-child(3),td:nth-child(3){display:none}.footer{padding:8px 12px}.footer span{width:100%}}";
@@ -66,16 +66,10 @@ void handleRoot(
   html += Matter.isDeviceCommissioned() ? "ok'>Commissioned" : "wait'>Waiting for commissioning";
   html += "</div></header>";
   if (Matter.isDeviceCommissioned()) {
-    html += "<section class='section'><h2>Lights</h2><table><thead><tr><th>Name</th><th>DALI set ID</th><th>DALI status ID</th><th>Group</th><th>State</th><th>Brightness</th></tr></thead><tbody id='lights-body'>";
+    html += "<section class='section'><h2>Lights</h2><table><thead><tr><th>Name</th><th>State</th><th>Brightness</th><th>Group</th><th>DALI set ID</th><th>DALI status ID</th></tr></thead><tbody id='lights-body'>";
     for (uint8_t i = 0; i < lightCount; ++i) {
       html += "<tr><td>";
       html += lightNames[i];
-      html += "</td><td>";
-      html += String(lightSetIds[i]);
-      html += "</td><td>";
-      html += String(lightStatusIds[i]);
-      html += "</td><td>";
-      html += lightIsGroup[i] ? "Yes" : "No";
       html += "</td><td id='light-state-";
       html += String(i);
       html += "' class='state ";
@@ -84,6 +78,12 @@ void handleRoot(
       html += String(i);
       html += "'>";
       html += String(lights[i].getBrightness());
+      html += "</td><td>";
+      html += lightIsGroup[i] ? "Yes" : "No";
+      html += "</td><td>";
+      html += String(lightSetIds[i]);
+      html += "</td><td>";
+      html += String(lightStatusIds[i]);
       html += "</td></tr>";
     }
     html += "</tbody></table><p id='light-count' class='muted'>";
