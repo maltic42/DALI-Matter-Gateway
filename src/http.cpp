@@ -50,9 +50,9 @@ void handleRoot(
   html += "<title>DALI-Matter-Gateway</title>";
   html += "<style>";
   html += "*{box-sizing:border-box}body{margin:0;background:#f3f5f6;color:#263238;font-family:Arial,sans-serif;line-height:1.45}";
-  html += ".page{max-width:960px;margin:0 auto;padding:32px 20px}header{border-bottom:1px solid #cfd8dc;padding-bottom:18px;margin-bottom:24px}";
+  html += ".page{max-width:960px;margin:0 auto;padding:32px 20px}header{padding-bottom:18px;margin-bottom:24px}";
   html += "h1{font-size:28px;font-weight:500;margin:0 0 12px}h2{font-size:18px;font-weight:500;margin:0 0 12px}";
-  html += ".status{display:inline-block;padding:5px 10px;background:#fff;font-size:14px}";
+  html += ".status{display:inline-block;padding:5px 10px;border-left:4px solid #607d8b;background:#fff;font-size:14px}";
   html += ".status.ok{border-color:#2e7d32;color:#1b5e20}.status.wait{border-color:#ef6c00;color:#bf360c}";
   html += ".memory{margin-top:8px;color:#78909c;font-size:12px}";
   html += ".section{background:#fff;border-top:3px solid #90a4ae;padding:18px 20px;margin-bottom:20px}";
