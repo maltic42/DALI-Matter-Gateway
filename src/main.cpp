@@ -27,6 +27,7 @@
 #include <DALI_lib.h>
 #include <secrets.h>
 #include <light_definitions.h>
+#include <timezone.h>
 #include <utils.h>
 #include <http.h>
 
@@ -106,7 +107,7 @@ void init_wifi() {
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
   }
-  configTime(0, 0, "pool.ntp.org", "time.nist.gov");
+  configTzTime(APP_TIMEZONE, "pool.ntp.org", "time.nist.gov");
   addLogLine(webLog, "WIFI connected.");
   addLogLine(webLog, String("IP address: ")+WiFi.localIP().toString());
   addLogLine(webLog, "WIFI setup completed.");

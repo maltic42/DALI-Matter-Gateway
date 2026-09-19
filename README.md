@@ -45,8 +45,56 @@ The following files contain project-specific configuration and should not be com
 
 - `src/secrets.cpp` — Wi-Fi credentials
 - `src/light_definitions.cpp` — local light configuration
+- `include/timezone.h` — timezone for log timestamps
 
 These files are listed in `.gitignore`.
+
+### Timezone
+
+The timezone is configured in `include/timezone.h` using a POSIX timezone string.
+The default setting is Central European Time with automatic daylight saving time.
+Available timezone names and POSIX string examples can be found in the
+[IANA Time Zone Database](https://www.iana.org/time-zones) and the
+[ESP-IDF time documentation](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/system_time.html#daylight-saving-time).
+
+### Light definitions
+
+The DALI lights are configured in `src/light_definitions.cpp`. The four arrays use
+the same index, so `lightNames[i]`, `lightIsGroup[i]`, `lightSetIds[i]`, and
+`lightStatusIds[i]` always describe the same light in the web interface.
+
+- `lightNames` defines the name shown in the web interface.
+- `lightIsGroup` selects whether the DALI target is a group (`true`) or a device
+	(`false`).
+- `lightSetIds` contains the DALI group ID when `lightIsGroup` is `true`. For a
+	device it contains the DALI short address of that device.
+- `lightStatusIds` contains the DALI short address of a device whose status is read.
+	For a group, enter the short address of any device belonging to that group. The
+	status is always read from a device, never from the group itself.
+
+Example:
+
+```cpp
+const char *lightNames[] = {
+	"Living room group",
+	"Hallway device"
+};
+
+const bool lightIsGroup[] = {
+	true,
+	false
+};
+
+const uint8_t lightSetIds[] = {
+	1,  // DALI group 1
+	4   // DALI device short address 4
+};
+
+const uint8_t lightStatusIds[] = {
+	17, // device short address in group 1
+	4   // device short address 4
+};
+```
 
 ## Building
 
