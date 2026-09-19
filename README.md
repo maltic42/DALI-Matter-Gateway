@@ -54,6 +54,27 @@ Open the project in PlatformIO and build the project using the configured enviro
 
 The firmware can be uploaded via USB or OTA.
 
+### Versioning
+
+The current product version is stored in `include/version.h` and follows semantic versioning.
+The version and copyright notice are shown in the web interface and in the `/status`
+JSON response.
+
+Development work should be done on a `development` branch and merged into `main` when
+it is ready. To publish a version, update `APP_VERSION` in `include/version.h`, merge it into `main`, and create
+and push a matching tag:
+
+```bash
+git add include/version.h
+git commit -m "Prepare release v0.1.0"
+git push
+git tag v0.1.0
+git push origin v0.1.0
+```
+
+The tag starts a GitHub Actions workflow that creates a GitHub Release containing only
+the source archive. No PlatformIO build runs on GitHub.
+
 ## Open Issues
 
 The Matter QR code is  still generated from the example configuration.
