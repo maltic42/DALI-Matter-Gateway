@@ -1,0 +1,40 @@
+name: Source release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out tagged source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create source archive
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          version=$(tr -d '[:space:]' < VERSION)
+          build=$(tr -d '[:space:]' < BUILD)
+          test "$TAG" = "v$version"
+          archive="dali-matter-gateway-v${version}-build-${build}.tgz"
+          git archive --format=tar --prefix="dali-matter-gateway-v${version}/" "$TAG" | gzip > "$archive"
+          echo "VERSION=$version" >> "$GITHUB_ENV"
+          echo "BUILD=$build" >> "$GITHUB_ENV"
+          echo "ARCHIVE=$archive" >> "$GITHUB_ENV"
+          echo "TAG=$TAG" >> "$GITHUB_ENV"
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$TAG" "$ARCHIVE" \
+            --title "DALI-Matter-Gateway v${VERSION} (Build ${BUILD})" \
+            --notes "Version: ${VERSION}\nBuild: ${BUILD}\nSource archive only."

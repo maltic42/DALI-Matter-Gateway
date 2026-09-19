@@ -54,6 +54,31 @@ Open the project in PlatformIO and build the project using the configured enviro
 
 The firmware can be uploaded via USB or OTA.
 
+### Versioning and builds
+
+The current product version is stored in `VERSION` and follows semantic versioning.
+The build number is stored in `BUILD` and is automatically incremented before each
+local PlatformIO build or upload. The version, build number, and copyright notice are
+shown in the web interface and in the `/status` JSON response.
+
+Development work should be done on a `development` branch and merged into `main` when
+it is ready. To publish a version, update `VERSION`, merge it into `main`, and create
+and push a matching tag. The build number is incremented automatically by PlatformIO:
+
+```bash
+printf "0.1.0\n" > VERSION
+platformio run
+git add BUILD VERSION
+git commit -m "Prepare release v0.1.0"
+git push
+git tag v0.1.0
+git push origin v0.1.0
+```
+
+The tag starts a GitHub Actions workflow that creates a GitHub Release containing only
+the source archive. The release title and description contain the version and build
+number. No PlatformIO build runs on GitHub.
+
 ## Open Issues
 
 The Matter QR code is  still generated from the example configuration.
