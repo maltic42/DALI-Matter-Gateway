@@ -66,16 +66,10 @@ void handleRoot(
   html += Matter.isDeviceCommissioned() ? "ok'>Commissioned" : "wait'>Waiting for commissioning";
   html += "</div></header>";
   if (Matter.isDeviceCommissioned()) {
-    html += "<section class='section'><h2>Lights</h2><table><thead><tr><th>Name</th><th>DALI set ID</th><th>DALI status ID</th><th>Group</th><th>State</th><th>Brightness</th></tr></thead><tbody id='lights-body'>";
+    html += "<section class='section'><h2>Lights</h2><table><thead><tr><th>Name</th><th>State</th><th>Brightness</th><th>Group</th><th>DALI set ID</th><th>DALI status ID</th></tr></thead><tbody id='lights-body'>";
     for (uint8_t i = 0; i < lightCount; ++i) {
       html += "<tr><td>";
       html += lightNames[i];
-      html += "</td><td>";
-      html += String(lightSetIds[i]);
-      html += "</td><td>";
-      html += String(lightStatusIds[i]);
-      html += "</td><td>";
-      html += lightIsGroup[i] ? "Yes" : "No";
       html += "</td><td id='light-state-";
       html += String(i);
       html += "' class='state ";
@@ -84,6 +78,12 @@ void handleRoot(
       html += String(i);
       html += "'>";
       html += String(lights[i].getBrightness());
+      html += "</td><td>";
+      html += lightIsGroup[i] ? "Yes" : "No";
+      html += "</td><td>";
+      html += String(lightSetIds[i]);
+      html += "</td><td>";
+      html += String(lightStatusIds[i]);
       html += "</td></tr>";
     }
     html += "</tbody></table><p id='light-count' class='muted'>";
