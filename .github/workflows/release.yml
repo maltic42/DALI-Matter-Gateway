@@ -34,4 +34,4 @@ jobs:
         run: |
           gh release create "$TAG" "$ARCHIVE" \
             --title "DALI-Matter-Gateway v${VERSION}" \
-            --notes "Version: ${VERSION}\nSource archive only."
+            --notes "Version: ${VERSION}"
