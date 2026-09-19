@@ -59,23 +59,12 @@ void handleRoot(
   html += "table{width:100%;border-collapse:collapse}th,td{text-align:left;vertical-align:middle;padding:11px 8px;border-bottom:1px solid #eceff1}th{color:#607d8b;font-size:12px;font-weight:600;text-transform:uppercase}";
   html += ".state{font:inherit;line-height:inherit}.on{color:#2e7d32}.off{color:#c62828}textarea{display:block;width:100%;min-height:260px;resize:vertical;border:1px solid #cfd8dc;background:#263238;color:#eceff1;padding:12px;font:13px monospace;line-height:1.5}";
   html += "button{border:0;background:#455a64;color:#fff;padding:10px 16px;font-size:14px;cursor:pointer}button:hover{background:#263238}.muted{color:#607d8b;font-size:14px}";
-  html += "@media(max-width:600px){.page{padding:22px 12px}h1{font-size:24px}.section{padding:14px 12px}th,td{padding:9px 4px}th:nth-child(3),td:nth-child(3){display:none}}";
+  html += ".footer{background:#e1e6e8;border-top:1px solid #b0bec5;color:#546e7a;padding:8px 20px;margin-top:16px;font-size:13px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}.footer strong{color:#37474f;font-weight:600}.footer .memory{margin-top:0;font-size:inherit;color:inherit}";
+  html += "@media(max-width:600px){.page{padding:22px 12px}h1{font-size:24px}.section{padding:14px 12px}th,td{padding:9px 4px}th:nth-child(3),td:nth-child(3){display:none}.footer{padding:8px 12px}.footer span{width:100%}}";
   html += "</style></head><body><main class='page'>";
   html += "<header><h1>DALI-Matter-Gateway</h1><div id='commission-status' class='status ";
   html += Matter.isDeviceCommissioned() ? "ok'>Commissioned" : "wait'>Waiting for commissioning";
-  html += "</div><div class='muted'>Version ";
-  html += APP_VERSION;
-  html += "</div><div class='muted'>";
-  html += APP_COPYRIGHT;
-  html += "</div><div id='memory' class='memory'>SRAM: ";
-  html += String(ESP.getFreeHeap() / 1024);
-  html += " / ";
-  html += String(ESP.getHeapSize() / 1024);
-  html += " KB free | PSRAM: ";
-  html += String(ESP.getFreePsram() / 1024);
-  html += " / ";
-  html += String(ESP.getPsramSize() / 1024);
-  html += " KB free</div></header>";
+  html += "</div></header>";
   if (Matter.isDeviceCommissioned()) {
     html += "<section class='section'><h2>Lights</h2><table><thead><tr><th>Name</th><th>DALI set ID</th><th>DALI status ID</th><th>Group</th><th>State</th><th>Brightness</th></tr></thead><tbody id='lights-body'>";
     for (uint8_t i = 0; i < lightCount; ++i) {
@@ -108,7 +97,19 @@ void handleRoot(
   }
   html += "<section class='section'><h2>Log</h2><textarea id='log' readonly>";
   html += escapeHtml(webLog);
-  html += "</textarea><script>";
+  html += "</textarea></section><footer class='footer'><span><strong>Version</strong> ";
+  html += APP_VERSION;
+  html += "</span><span>";
+  html += APP_COPYRIGHT;
+  html += "</span><span id='memory' class='memory'>SRAM: ";
+  html += String(ESP.getFreeHeap() / 1024);
+  html += " / ";
+  html += String(ESP.getHeapSize() / 1024);
+  html += " KB free | PSRAM: ";
+  html += String(ESP.getFreePsram() / 1024);
+  html += " / ";
+  html += String(ESP.getPsramSize() / 1024);
+  html += " KB free</span></footer><script>";
   html += "const log=document.getElementById('log');";
   html += "const memory=document.getElementById('memory');";
   html += "const commissionStatus=document.getElementById('commission-status');";
@@ -116,7 +117,7 @@ void handleRoot(
   html += Matter.isDeviceCommissioned() ? "true;" : "false;";
   html += "const updateStatus=async()=>{try{const response=await fetch('/status',{cache:'no-store'});if(!response.ok)return;const data=await response.json();if(data.commissioned!==initialCommissioned){window.location.reload();return;}commissionStatus.textContent=data.commissioned?'Commissioned':'Waiting for commissioning';commissionStatus.className='status '+(data.commissioned?'ok':'wait');memory.textContent=`SRAM: ${data.freeHeap} / ${data.heapSize} KB free | PSRAM: ${data.freePsram} / ${data.psramSize} KB free`;data.lights.forEach((light,index)=>{const state=document.getElementById('light-state-'+index);const brightness=document.getElementById('light-brightness-'+index);if(state){state.textContent=light.on?'ON':'OFF';state.className='state '+(light.on?'on':'off');}if(brightness)brightness.textContent=light.brightness;});const wasAtBottom=log.scrollTop+log.clientHeight>=log.scrollHeight-2;const oldTop=log.scrollTop;log.value=data.log;if(wasAtBottom)log.scrollTop=log.scrollHeight;else log.scrollTop=oldTop;}catch(error){}};";
   html += "setInterval(updateStatus,2000);updateStatus();";
-  html += "</script></section></main></body></html>";
+  html += "</script></main></body></html>";
   server.send(200, "text/html", html);
 }
 
