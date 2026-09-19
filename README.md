@@ -56,14 +56,7 @@ The firmware can be uploaded via USB or OTA.
 
 ## Open Issues
 
-- The Matter device still uses the example values for some commissioning data,
-	including the example device information and serial number. The Matter QR
-	code is also still generated from the example configuration and must be
-	replaced with project-specific values.
-- The current firmware supports approximately eight Matter lights. This limit
-	is related to the current ESP32 Arduino Matter library implementation. A
-	future library version is expected to use the ESP32's PSRAM more effectively
-	and should allow this limit to be increased.
+The Matter QR code is  still generated from the example configuration 
 
 ## Screenshots
 
