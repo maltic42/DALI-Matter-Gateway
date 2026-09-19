@@ -159,7 +159,7 @@ void init_matter() {
 
     // set the callback function to handle the Light state change
     lights[i].onChange(setLightState);
-
+  
     // lambda functions are used to set the attribute change callbacks
     lights[i].onChangeOnOff([i](bool state) {
       addLogLine(webLog, String("Received OnOff change for light ")+String(i + 1)+String(" changed to ")+String(state ? "ON" : "OFF"));
@@ -189,7 +189,13 @@ void init_matter() {
     });
   } 
 
- 
+  Matter.setVendorName("toad.de");
+  Matter.setDeviceName("DALI-Matter-Bridge");
+  Matter.setProductName("DALI-Matter-Bridge");
+  Matter.setHardwareVersion(1);
+  Matter.setHardwareVersionString("1.0");
+  Matter.setSerialNumber("00000001");
+
   // Matter beginning - Last step, after all EndPoints are initialized
   Matter.begin();
   // This may be a restart of a already commissioned Matter accessory
