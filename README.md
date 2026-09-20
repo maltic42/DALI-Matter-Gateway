@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 This project controls groups of DALI luminaires or individual DALI luminaires
 through Matter using a Waveshare ESP32-S3-Pico and the Waveshare DALI2 Expansion
-Module. This makes the DALI installation available to Matter platforms such as
+Module which acts like a bridge or gateway. This makes the DALI installation available to Matter platforms such as
 Google Home, Amazon Alexa, and Apple HomeKit.
 
 The project was created because existing Matter solutions commonly exposed only
