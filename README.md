@@ -145,7 +145,7 @@ knows how this can be implemented.
 
 ## Screenshots
 
-![web interface](docs/images/webinterface.png)
+![web interface](docs/images/webinterface2.png)
 
 ## License
 
