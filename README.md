@@ -137,6 +137,12 @@ the source archive. No PlatformIO build runs on GitHub.
 
 The Matter QR code is  still generated from the example configuration.
 
+The names of individual lamps cannot currently be set through the Matter device
+configuration. As a result, lamps may need to be renamed manually after they are
+added to a Matter platform such as Google Home. I have not yet found out how to
+provide these names from the gateway and would appreciate support from anyone who
+knows how this can be implemented.
+
 ## Screenshots
 
 ![web interface](docs/images/webinterface.png)
