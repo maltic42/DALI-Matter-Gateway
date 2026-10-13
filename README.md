@@ -1,4 +1,4 @@
-# DALI-Matter-Gateway
+# DALI Matter Gateway
 
 Copyright (C) 2026 Malte Rudolf
 
