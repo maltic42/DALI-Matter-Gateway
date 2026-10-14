@@ -1,18 +1,16 @@
-/*
- * DALI-Matter-Gateway
- *
- * Copyright (C) 2026 Malte Rudolf
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU General Public License for more details.
- */
+// DALI-Matter-Gateway
+//
+// Copyright (C) 2026 Malte Rudolf
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+// See the GNU General Public License for more details.
 
 
 #include <Arduino.h>
@@ -56,21 +54,32 @@ unsigned long previousMillis = 0;
 
 // DALI code
 
+// Read the current logic level on the DALI receive pin.
+// @return The digital input level.
+
 uint8_t bus_is_high() {
   return digitalRead(RX_PIN); 
 }
+
+// Pull the DALI transmit pin low.
 
 void bus_set_low() {
   digitalWrite(TX_PIN,LOW); 
 }
 
+// Drive the DALI transmit pin high.
+
 void bus_set_high() {
   digitalWrite(TX_PIN,HIGH); 
 }
 
+// Service the DALI library from the hardware timer interrupt.
+
 void ARDUINO_ISR_ATTR onTimer() {
   dali.timer();
 }
+
+// Configure the DALI pins, timer, and bus interface.
 
 void init_dali() {
   addLogLine(webLog, "Setting up DALI ...");
@@ -86,12 +95,17 @@ void init_dali() {
   addLogLine(webLog, "DALI setup completed.");
 }
 
-// Set the Light based on the current state of the Dimmable Light
+// Handle a requested Matter light state change.
+// @param state The requested on/off state.
+// @param brightness The requested brightness level.
+// @return Whether the state change was accepted.
+
 bool setLightState(bool state, uint8_t brightness) {
   return true;
 }
 
-// Handle the decommissioning of the Matter devices
+// Turn off all Matter lights and decommission the device.
+
 void handleDecommission() {
   for (uint8_t i = 0; i < lightCount; ++i) {
     lights[i] = false;
@@ -99,6 +113,8 @@ void handleDecommission() {
   Matter.decommission();
   server.send(200, "text/plain", "Decommissioning...\n");
 }
+
+// Connect to Wi-Fi and configure the system clock.
 
 void init_wifi() {
   addLogLine(webLog, "Setting up WIFI ...");
@@ -112,6 +128,8 @@ void init_wifi() {
   addLogLine(webLog, String("IP address: ")+WiFi.localIP().toString());
   addLogLine(webLog, "WIFI setup completed.");
 }
+
+// Configure and start Arduino OTA updates with progress logging.
 
 void init_ota() {
   addLogLine(webLog, "Setting up OTA ...");
@@ -137,6 +155,8 @@ void init_ota() {
   addLogLine(webLog, "OTA setup completed.");
 }
 
+// Register HTTP routes and start the web server.
+
 void init_webserver() {
   addLogLine(webLog, "Setting up web server ...");
   server.on("/", []() {
@@ -149,6 +169,8 @@ void init_webserver() {
   server.begin();
   addLogLine(webLog, "Web server setup completed.");
 }
+
+// Initialize Matter lights, callbacks, identity, and basic information.
 
 void init_matter() {
   int16_t level;
@@ -229,6 +251,8 @@ void init_matter() {
   addLogLine(webLog, "Matter setup completed.");
 }
 
+// Initialize serial output, lights, network services, DALI, and Matter.
+
 void setup() {
   Serial.begin(115200);
 
@@ -245,6 +269,8 @@ void setup() {
   previousMillis = millis();
 }
 
+// Process network and DALI events and synchronize light state with Matter.
+
 void loop() {
   int16_t level;
 
@@ -256,6 +282,7 @@ void loop() {
   uint8_t data[100];
   uint8_t bitcnt = dali.rx(data);
 
+  // Decode complete DALI frames and defer status polling to coalesce bus updates.
   if(bitcnt>=8) {
     updateCloudValues=false;
     for(uint8_t i=0;i<=(bitcnt-1)>>3;i+=2) {
@@ -267,7 +294,8 @@ void loop() {
       secondOctet = data[i];  
       addLogLine(webLog, String("DALI data received: ")+byteToHex(firstOctet)+String(" ")+byteToHex(secondOctet));
       addLogLine(webLog, String("DALI command: ") + daliAddressToString(firstOctet, secondOctet));
-      if ((secondOctet==0) || (secondOctet==5) || (secondOctet==2) || (secondOctet==1)) {
+      // Refresh light status after OFF (0), RECALL MAX LEVEL (5), DOWN (2), UP (1) or GO TO LAST ACTIVE LEVEL (10)
+      if ((secondOctet==0) || (secondOctet==5) || (secondOctet==2) || (secondOctet==1) || (secondOctet==10)) {
         for (uint8_t i = 0; i < lightCount; ++i) {
           addLogLine(webLog, "Queuing light update ...");
           updateCloudValues=true;
@@ -277,6 +305,7 @@ void loop() {
     }
   }
 
+  // Suppress Matter callbacks while applying DALI state to avoid feedback writes.
   if (updateCloudValues && (millis() - previousMillis >= 5000)) {
     updateCloudValues=false;
     updateDaliValues=false;
@@ -299,6 +328,7 @@ void loop() {
     }
   }
 
+  // Periodically report pairing instructions until commissioning completes.
   if (!Matter.isDeviceCommissioned()) {
     if (millis() - lastMatterMessageMillis > 10000) {
       lastMatterMessageMillis = millis();
