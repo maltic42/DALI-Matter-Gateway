@@ -1,40 +1,31 @@
-/*
- * DALI-Matter-Gateway
- *
- * Copyright (C) 2026 Malte Rudolf
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU General Public License for more details.
- */
+// DALI-Matter-Gateway
+//
+// Copyright (C) 2026 Malte Rudolf
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+// See the GNU General Public License for more details.
 
 #include <http.h>
 #include <Matter.h>
 #include <utils.h>
 #include <version.h>
 
-static String escapeJson(const String &text) {
-  String escaped;
-  escaped.reserve(text.length());
-  for (uint16_t i = 0; i < text.length(); ++i) {
-    const char character = text[i];
-    switch (character) {
-      case '\\': escaped += "\\\\"; break;
-      case '"': escaped += "\\\""; break;
-      case '\n': escaped += "\\n"; break;
-      case '\r': escaped += "\\r"; break;
-      case '\t': escaped += "\\t"; break;
-      default: escaped += character; break;
-    }
-  }
-  return escaped;
-}
+// Build and send the gateway's main HTML page.
+// @param server The web server used to send the response.
+// @param lights The configured Matter dimmable lights.
+// @param lightCount The number of configured lights.
+// @param lightNames The display name for each light.
+// @param lightIsGroup Whether each light represents a DALI group.
+// @param lightSetIds The DALI set ID for each light.
+// @param lightStatusIds The DALI status ID for each light.
+// @param webLog The current log text displayed on the page.
 
 void handleRoot(
   WebServer &server,
@@ -65,6 +56,7 @@ void handleRoot(
   html += "<header><h1>DALI-Matter-Gateway</h1><div id='commission-status' class='status ";
   html += Matter.isDeviceCommissioned() ? "ok'>Commissioned" : "wait'>Waiting for commissioning";
   html += "</div></header>";
+  // Show light controls only after the Matter device has been commissioned.
   if (Matter.isDeviceCommissioned()) {
     html += "<section class='section'><h2>Lights</h2><table><thead><tr><th>Name</th><th>State</th><th>Brightness</th><th>Group</th><th>DALI set ID</th><th>DALI status ID</th></tr></thead><tbody id='lights-body'>";
     for (uint8_t i = 0; i < lightCount; ++i) {
@@ -110,6 +102,7 @@ void handleRoot(
   html += " / ";
   html += String(ESP.getPsramSize() / 1024);
   html += " KB free</span></footer><script>";
+  // Poll the status endpoint to refresh the page without a full reload.
   html += "const log=document.getElementById('log');";
   html += "const memory=document.getElementById('memory');";
   html += "const commissionStatus=document.getElementById('commission-status');";
@@ -120,6 +113,16 @@ void handleRoot(
   html += "</script></main></body></html>";
   server.send(200, "text/html", html);
 }
+
+// Build and send the current gateway status as JSON.
+// @param server The web server used to send the response.
+// @param lights The configured Matter dimmable lights.
+// @param lightCount The number of configured lights.
+// @param lightNames The display name for each light.
+// @param lightIsGroup Whether each light represents a DALI group.
+// @param lightSetIds The DALI set ID for each light.
+// @param lightStatusIds The DALI status ID for each light.
+// @param webLog The current log text included in the response.
 
 void handleStatus(
   WebServer &server,
@@ -147,6 +150,7 @@ void handleStatus(
   json += ",\"psramSize\":";
   json += String(ESP.getPsramSize() / 1024);
   json += ",\"lights\":[";
+  // Escape names so quotes and control characters remain valid JSON.
   for (uint8_t i = 0; i < lightCount; ++i) {
     if (i > 0) json += ",";
     json += "{\"name\":\"";

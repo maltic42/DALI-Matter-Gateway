@@ -1,18 +1,16 @@
-/*
- * DALI-Matter-Gateway
- *
- * Copyright (C) 2026 Malte Rudolf
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU General Public License for more details.
- */
+// DALI-Matter-Gateway
+//
+// Copyright (C) 2026 Malte Rudolf
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+// See the GNU General Public License for more details.
 
 #include <Arduino.h>
 #include <DALI_lib.h>
@@ -20,14 +18,44 @@
 
 constexpr size_t maxLogLength = 20000;
 
+// Escape HTML-sensitive characters in text.
+// @param text The text to escape.
+// @return A copy of the text with HTML entities substituted.
+
 String escapeHtml(const String &text) {
   String escaped = text;
+  // Escape ampersands first so the entities added below remain intact.
   escaped.replace("&", "&amp;");
   escaped.replace("<", "&lt;");
   escaped.replace(">", "&gt;");
   escaped.replace("\"", "&quot;");
   return escaped;
 }
+
+// Escape characters that have special meaning in JSON strings.
+// @param text The text to escape.
+// @return The escaped text, ready to insert into a JSON string.
+
+String escapeJson(const String &text) {
+  String escaped;
+  escaped.reserve(text.length());
+  for (uint16_t i = 0; i < text.length(); ++i) {
+    const char character = text[i];
+    switch (character) {
+      case '\\': escaped += "\\\\"; break;
+      case '"': escaped += "\\\""; break;
+      case '\n': escaped += "\\n"; break;
+      case '\r': escaped += "\\r"; break;
+      case '\t': escaped += "\\t"; break;
+      default: escaped += character; break;
+    }
+  }
+  return escaped;
+}
+
+// Format a byte as a two-digit uppercase hexadecimal string.
+// @param value The byte to format.
+// @return The hexadecimal representation, padded with a leading zero if needed.
 
 String byteToHex(uint8_t value) { 
   String str = String(value, HEX); 
@@ -37,6 +65,10 @@ String byteToHex(uint8_t value) {
   str.toUpperCase(); 
   return str; 
 }
+
+// Convert a regular DALI command code to its readable name.
+// @param command The regular command code.
+// @return The command name, or "RESERVED" for an unassigned code.
 
 String daliRegularCommandToString(uint8_t command) {
   switch (command) {
@@ -133,6 +165,11 @@ String daliRegularCommandToString(uint8_t command) {
   }
 }
 
+// Convert a DALI special command code to its readable name.
+// @param command The special command code.
+// @param parameter The command's parameter byte.
+// @return The command name followed by the parameter in hexadecimal.
+
 String daliSpecialCommandToString(uint8_t command, uint8_t parameter) {
   String name;
   switch (command) {
@@ -155,16 +192,24 @@ String daliSpecialCommandToString(uint8_t command, uint8_t parameter) {
     case 0xC5: name = "DTR2"; break;
     case 0xC7: name = "WRITE MEMORY LOCATION"; break;
     case 0xC9: name = "WRITE MEMORY LOCATION NO REPLY"; break;
+    // Preserve unknown special commands in a useful hexadecimal form.
     default: return "SPECIAL 0x" + byteToHex(command) + " 0x" + byteToHex(parameter);
   }
   return name + " 0x" + byteToHex(parameter);
 }
 
+// Decode a DALI address and command pair into readable text.
+// @param firstOctet The address and command-type byte.
+// @param secondOctet The data byte, containing a level or command code.
+// @return A readable target and command description.
+
 String daliAddressToString(uint8_t firstOctet, uint8_t secondOctet) {
+  // Odd special-command opcodes are distinguishable from address/command frames.
   if (firstOctet >= 0xA1 && firstOctet <= 0xC9 && (firstOctet & 0x01)) {
     return daliSpecialCommandToString(firstOctet, secondOctet);
   }
 
+  // An even first octet denotes a direct arc-power command.
   if ((firstOctet & 0x01) == 0) {
     String target;
     if (firstOctet == 0xFE) {
@@ -177,6 +222,7 @@ String daliAddressToString(uint8_t firstOctet, uint8_t secondOctet) {
     return target + " - DAPC " + String(secondOctet);
   }
 
+  // Otherwise, the second octet is a regular command for the decoded target.
   String target;
   if (firstOctet == 0xFF) {
     target = "Broadcast";
@@ -188,10 +234,16 @@ String daliAddressToString(uint8_t firstOctet, uint8_t secondOctet) {
   return target + " - " + daliRegularCommandToString(secondOctet);
 }
 
+// Add a timestamped message to the front of the web log and print it.
+// @param webLog The log to update.
+// @param message The message to append.
+// @return The updated log, trimmed to the maximum retained length.
+
 String addLogLine(String &webLog, const String &message) {
   struct tm timeInfo;
   String timestamp;
 
+  // Fall back to uptime when the system clock is not available.
   if (getLocalTime(&timeInfo, 100)) {
     char timeBuffer[24];
     strftime(timeBuffer, sizeof(timeBuffer), "%Y-%m-%d %H:%M:%S", &timeInfo);
@@ -202,6 +254,7 @@ String addLogLine(String &webLog, const String &message) {
 
   String line = timestamp + " - " + message + "\n";
   webLog = line + webLog;
+  // Remove the oldest complete lines first to preserve recent log entries.
   while (webLog.length() > maxLogLength) {
     int newlinePosition = webLog.lastIndexOf('\n', webLog.length() - 2);
     if (newlinePosition < 0) {
