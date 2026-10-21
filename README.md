@@ -1,5 +1,7 @@
 # DALI Matter Gateway
 
+Matter bridge for DALI-2 lighting on ESP32-S3: control DALI groups and individual luminaires from Google Home, Alexa and Apple HomeKit
+
 ## About
 
 This project controls groups of DALI luminaires or individual DALI luminaires
@@ -36,6 +38,17 @@ independently.
 ## Tested
 
 - Controlling groups of DALI luminaires through Google Home
+
+## Download
+
+Download the latest release from https://github.com/maltic42/DALI-Matter-Gateway/releases 
+
+## Building
+
+Open the project in PlatformIO and build the project using the configured environment.
+
+The firmware can be uploaded via USB or OTA.
+
 
 ## Configuration
 
@@ -93,12 +106,6 @@ const uint8_t lightStatusIds[] = {
 	4   // device short address 4
 };
 ```
-
-## Building
-
-Open the project in PlatformIO and build the project using the configured environment.
-
-The firmware can be uploaded via USB or OTA.
 
 ### Versioning
 
