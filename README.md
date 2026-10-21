@@ -1,17 +1,5 @@
 # DALI Matter Gateway
 
-Copyright (C) 2026 Malte Rudolf
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
-
 ## About
 
 This project controls groups of DALI luminaires or individual DALI luminaires
@@ -182,3 +170,17 @@ To the extent permitted by applicable law, the author shall not be liable for an
 This project is provided without any obligation to provide support, maintenance, updates, bug fixes, or other services.
 
 There is no guarantee that issues reported through GitHub Issues, Discussions, or other communication channels will be addressed.
+
+## License
+
+Copyright (C) 2026 Malte Rudolf
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
